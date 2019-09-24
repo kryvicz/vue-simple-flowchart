@@ -32,6 +32,10 @@ export default {
         return [0, 0]
       }
     },
+    type: {
+      type: String,
+      default: 'Default'
+    },
     id: Number,
   },
   data() {
@@ -67,16 +71,27 @@ export default {
     }
   },
   computed: {
+    pathColor() {
+      const green = 'rgb(65, 195, 88)'
+      const red = 'rgb(255, 85, 85)'
+      const def = 'rgb(72, 92, 173)'
+      switch(this.type) {
+        case 'True': stroke = green; break;
+        case 'False': stroke = red; break;
+        default: stroke = def;
+      }
+      return stroke;
+    },
     pathStyle() {
       return {
-        stroke: 'rgb(255, 136, 85)',
+        stroke: this.pathColor(),
         strokeWidth: 2.73205,
         fill: 'none',
       }
     },
     arrowStyle() {
       return {
-        stroke: 'rgb(255, 136, 85)',
+        stroke: this.pathColor(),
         strokeWidth: 5.73205,
         fill: 'none',
       }
