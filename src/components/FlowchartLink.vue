@@ -2,12 +2,19 @@
   <g @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave">
     <path :d="dAttr" :style="pathStyle"></path>
+    <select v-model="linkType">
+      <option></option>
+      <option>True</option>
+      <option>False</option>
+      <option>Next</option>
+    </select>
     <a v-if="show.delete" @click="deleteLink">
       <text 
         text-anchor="middle" 
         :transform="arrowTransform"
         font-size="22">&times;</text>
     </a>
+
     <path v-else d="M -1 -1 L 0 1 L 1 -1 z"
       :style="arrowStyle"
       :transform="arrowTransform"></path>
@@ -42,7 +49,8 @@ export default {
     return {
       show: {
         delete: false,
-      }
+      },
+      linkType: ''
     }
   },
   methods: {
