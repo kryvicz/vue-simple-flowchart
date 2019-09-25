@@ -68,10 +68,8 @@ export default {
     },
     deleteLink() {
       this.$emit('deleteLink')
-    }
-  },
-  computed: {
-    pathColor() {
+    },
+    calculateColor() {
       const green = 'rgb(65, 195, 88)'
       const red = 'rgb(255, 85, 85)'
       const def = 'rgb(72, 92, 173)'
@@ -81,17 +79,19 @@ export default {
         default: stroke = def;
       }
       return stroke;
-    },
+    }
+  },
+  computed: {
     pathStyle() {
       return {
-        stroke: this.pathColor(),
+        stroke: this.calculateColor(),
         strokeWidth: 2.73205,
         fill: 'none',
       }
     },
     arrowStyle() {
       return {
-        stroke: this.pathColor(),
+        stroke: this.calculateColor(),
         strokeWidth: 5.73205,
         fill: 'none',
       }
