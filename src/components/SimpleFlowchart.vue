@@ -19,7 +19,8 @@
       :options="nodeOptions"
       @linkingStart="linkingStart(node.id)"
       @linkingStop="linkingStop(node.id)"
-      @nodeSelected="nodeSelected(node.id, $event)">
+      @nodeSelected="nodeSelected(node.id, $event)"
+      @nodeDblClick="nodeDblClick(node.id, $event)">
     </flowchart-node>
   </div>
 </template>
@@ -191,6 +192,9 @@ export default {
       this.$emit('nodeClick', id);
       this.mouse.lastX = e.pageX || e.clientX + document.documentElement.scrollLeft
       this.mouse.lastY = e.pageY || e.clientY + document.documentElement.scrollTop
+    },
+    nodeDblClick(id, e) {
+      this.$emit('nodeDblClick', id);
     },
     handleMove(e) {
       if (this.action.linking) {

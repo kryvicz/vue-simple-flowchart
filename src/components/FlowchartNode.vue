@@ -3,6 +3,7 @@
     @mousedown="handleMousedown"
     @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave"
+    @dblclick="handleDblClick"
     v-bind:class="{selected: options.selected === id}">
     <div class="node-port node-input"
        @mousedown="inputMouseDown"
@@ -87,6 +88,13 @@ export default {
       // console.log(target);
       if (target.className.indexOf('node-input') < 0 && target.className.indexOf('node-output') < 0) {
         this.$emit('nodeSelected', e);
+      }
+      e.preventDefault();
+    },
+    handleDblClick(e) {
+      const target = e.target || e.srcElement;
+      if (target.className.indexOf('node-input') < 0 && target.className.indexOf('node-output') < 0) {
+        this.$emit('nodeDblClick', e);
       }
       e.preventDefault();
     },
