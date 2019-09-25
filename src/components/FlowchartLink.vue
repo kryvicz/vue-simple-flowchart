@@ -1,13 +1,9 @@
 <template>
   <g @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave">
-    <path :d="dAttr" :style="pathStyle"></path>
-    <select v-model="linkType">
-      <option></option>
-      <option>True</option>
-      <option>False</option>
-      <option>Next</option>
-    </select>
+    <path :d="dAttr" :style="pathStyle">
+    <text>{{type}}</text>
+    </path>
     <a v-if="show.delete" @click="deleteLink">
       <text 
         text-anchor="middle" 
