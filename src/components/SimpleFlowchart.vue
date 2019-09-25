@@ -97,6 +97,7 @@ export default {
           start: [cx, cy], 
           end: [ex, ey],
           id: link.id,
+          type: link.type,
         };
       })
       if (this.draggingLink) {
