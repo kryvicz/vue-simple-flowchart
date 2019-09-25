@@ -70,6 +70,7 @@ export default {
       this.$emit('deleteLink')
     },
     calculateColor() {
+      var stroke;
       const green = 'rgb(65, 195, 88)'
       const red = 'rgb(255, 85, 85)'
       const def = 'rgb(72, 92, 173)'
