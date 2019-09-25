@@ -1,16 +1,17 @@
 <template>
   <g @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave">
-    <path :d="dAttr" :style="pathStyle">
-    <text>{{type}}</text>
-    </path>
+    <path :d="dAttr" :style="pathStyle"></path>
+    <text 
+      :x="labX"
+      :y="labY"
+      @click="handleNodeTypeClick">{{type}}</text>
     <a v-if="show.delete" @click="deleteLink">
       <text 
         text-anchor="middle" 
         :transform="arrowTransform"
         font-size="22">&times;</text>
     </a>
-
     <path v-else d="M -1 -1 L 0 1 L 1 -1 z"
       :style="arrowStyle"
       :transform="arrowTransform"></path>
@@ -37,7 +38,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'Default'
+      default: 'Next'
     },
     id: Number,
   },
@@ -46,7 +47,7 @@ export default {
       show: {
         delete: false,
       },
-      linkType: ''
+      linkTypes: ['Next', 'True', 'False'],
     }
   },
   methods: {
@@ -57,6 +58,9 @@ export default {
     },
     handleMouseLeave() {
       this.show.delete = false;
+    },
+    handleNodeTypeClick() {
+      this.type = this.linkTypes[(1 + this.linkTypes.indexOf(this.type)) % this.linkTypes.length]
     },
     caculateCenterPoint() {
       // caculate arrow position: the center point between start and end
@@ -110,6 +114,12 @@ export default {
       let cx = this.start[0], cy = this.start[1], ex = this.end[0], ey = this.end[1];
       let x1 = cx, y1 = cy + 50, x2 = ex, y2 = ey - 50;
       return `M ${cx}, ${cy} C ${x1}, ${y1}, ${x2}, ${y2}, ${ex}, ${ey}`;
+    },
+    labX() {
+      return Math.sign(this.end[0] - this.start[0]) > 0 ? this.start[0] + 40 : this.start[0] - 70;
+    },
+    labY() {
+      return this.start[1] + 30 * Math.sign(this.end[1] - this.start[1])
     }
   }
 }
