@@ -5,6 +5,7 @@
     <text 
       :x="labX"
       :y="labY"
+      font-size="11"
       @click="handleNodeTypeClick">{{type}}</text>
     <a v-if="show.delete" @click="deleteLink">
       <text 
@@ -38,16 +39,21 @@ export default {
     },
     type: {
       type: String,
-      default: 'Next'
+      default: "Next",
     },
     id: Number,
+    linkTypes: {
+      type: Array,
+       default () {
+         return [{value: "Next", color: 'rgb(72, 92, 173)'}]
+       }
+    },
   },
   data() {
     return {
       show: {
         delete: false,
       },
-      linkTypes: ['Next', 'True', 'False'],
     }
   },
   methods: {
@@ -60,7 +66,7 @@ export default {
       this.show.delete = false;
     },
     handleNodeTypeClick() {
-      this.type = this.linkTypes[(1 + this.linkTypes.indexOf(this.type)) % this.linkTypes.length]
+      this.$emit("changeLinkType", this.id) ;
     },
     caculateCenterPoint() {
       // caculate arrow position: the center point between start and end
@@ -76,31 +82,24 @@ export default {
     },
     deleteLink() {
       this.$emit('deleteLink')
-    },
-    calculateColor() {
-      var stroke;
-      const green = 'rgb(65, 195, 88)'
-      const red = 'rgb(255, 85, 85)'
-      const def = 'rgb(72, 92, 173)'
-      switch(this.type) {
-        case 'True': stroke = green; break;
-        case 'False': stroke = red; break;
-        default: stroke = def;
-      }
-      return stroke;
     }
   },
   computed: {
+    linkColor: function() {
+      var type = this.linkTypes.find((t) => {return t.value == this.type})
+      if(type != undefined) return type.color
+      else return this.linkTypes[0].color
+    },
     pathStyle() {
       return {
-        stroke: this.calculateColor(),
+        stroke: this.linkColor,
         strokeWidth: 2.73205,
         fill: 'none',
       }
     },
     arrowStyle() {
       return {
-        stroke: this.calculateColor(),
+        stroke: this.linkColor,
         strokeWidth: 5.73205,
         fill: 'none',
       }
@@ -116,10 +115,10 @@ export default {
       return `M ${cx}, ${cy} C ${x1}, ${y1}, ${x2}, ${y2}, ${ex}, ${ey}`;
     },
     labX() {
-      return Math.sign(this.end[0] - this.start[0]) > 0 ? this.start[0] + 40 : this.start[0] - 70;
+      return Math.sign(this.end[0] - this.start[0]) > 0 ? this.start[0] + 30 : this.start[0] - 60;
     },
     labY() {
-      return this.start[1] + 30 * Math.sign(this.end[1] - this.start[1])
+      return this.start[1] + 20 * Math.sign(this.end[1] - this.start[1])
     }
   }
 }

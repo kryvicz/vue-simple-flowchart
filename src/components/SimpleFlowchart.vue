@@ -7,7 +7,10 @@
       <flowchart-link v-bind.sync="link" 
         v-for="(link, index) in lines" 
         :key="`link${index}`"
-        @deleteLink="linkDelete(link.id)">
+        :type="link.type"
+        :linkTypes="linkTypes"
+        @deleteLink="linkDelete(link.id)"
+        @changeLinkType="changeLinkType($event)">
       </flowchart-link>
     </svg>
     <flowchart-node v-bind.sync="node" 
@@ -45,6 +48,12 @@ export default {
       type: Number,
       default: 400,
     },
+    linkTypes: {
+      type: Array,
+       default () {
+         return [{value: "Next", color: 'rgb(72, 92, 173)'}]
+       }
+    }
   },
   data() {
     return {
@@ -157,6 +166,7 @@ export default {
             id: maxID + 1,
             from: this.draggingLink.from,
             to: index,
+            type: this.linkTypes[0].value
           };
           this.scene.links.push(newLink)
           this.$emit('linkAdded', newLink)
@@ -255,7 +265,14 @@ export default {
         return link.from !== id && link.to !== id
       })
       this.$emit('nodeDelete', id)
+    },
+    changeLinkType(id) {
+      var link = this.scene.links.find((l)=>{return l.id == id})
+      if(link.type == undefined) link.value = this.linkTypes[0].value
+      link.type = this.linkTypes[(1 + this.linkTypes.findIndex((t)=>{return t.value == link.type})) % this.linkTypes.length].value
+      //      this.$emit("changeLinkType", id) ;
     }
+
   },
 }
 </script>
